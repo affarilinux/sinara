@@ -1,6 +1,6 @@
 from neo4j import GraphDatabase
 
-from Neo4j.neo import Neo
+from neo4j.neo import Neo
 
 class Neo4jClient:
 

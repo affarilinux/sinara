@@ -9,14 +9,9 @@ import main
 class TrioTasks:
     async def tim(self):
 
-        #nucleovar = Nucleo()
-        #nucleovar.lista_caractere()
-
         # Função assíncrona que executa uma tarefa repetidamente usando Trio
         while main.Sistema.while_treads:
-
-            #sd = Membrana_plasmatica()
-            print(123)
+        
 
             await trio.sleep(2)  # Aguarda 2 segundos antes de continuar
 

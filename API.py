@@ -2,9 +2,6 @@ import requests
 from flask import Flask, request, jsonify
 from threading import Thread
 
-import main
-
-
 class FlaskAPI:
     def __init__(self, shared_tecla):
 
@@ -38,7 +35,7 @@ class FlaskAPI:
     def send_data(self):
 
         # Função para capturar entrada do usuário
-        while main.Sistema.while_treads:
+        while True:
             data_input = input("API 1: Digite algo para enviar à API 2: ")
             data = {"mensagem": data_input}
 

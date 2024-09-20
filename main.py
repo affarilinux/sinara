@@ -4,8 +4,6 @@ import arq_trio
 import API
 import sensitive_ext
 
-from Neo4j.neo import Neo4jClient
-
 class Sistema:
 
     while_treads = True
