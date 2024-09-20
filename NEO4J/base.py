@@ -1,18 +1,21 @@
 from neo4j import GraphDatabase
 
-from neo4j.neo import Neo
+from NEO4J.neo import Neo
+
 
 class Neo4jClient:
 
-    def ativar_banco(self):
+    def ativar_Neo(self):
 
         # Criando o driver
-        self.driver = GraphDatabase.driver(Neo.url, auth=(Neo.username, Neo.password))
+        self.driver = GraphDatabase.driver(
+            Neo.url, auth=(Neo.username, Neo.password))
         print(12)
-    def commit_banco(self):
+
+    def commit_Neo(self):
 
         with self.driver.session() as session:
-        # Iniciando a transação
+            # Iniciando a transação
             with session.begin_transaction() as tx:
                 # Executando a consulta dentro da transação
                 query = "CREATE (n:Pessoa {nome: 'João', idade: 30}) RETURN n"
@@ -21,6 +24,6 @@ class Neo4jClient:
                 tx.commit()
                 print("Nó criado com sucesso e transação comitada.")
 
-    def sair_banco(self):
+    def sair_Neo(self):
         print(13)
         self.driver.close()

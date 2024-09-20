@@ -3,6 +3,8 @@ import random
 import sensitive_ext
 import main
 
+from sistema_hardware.orgao_portas.tecido_teclado.db_teclas import DBTecido
+
 """  LEITURA DE VARIAVEL - INICIO DE PROCESSO EXTERNO """
 
 
@@ -46,7 +48,11 @@ class Tecido:
 
                 st = sensortec[0][Tecido.loop_string]
 
-                print(st)
+                dbt = DBTecido()
+                ver = dbt.verificar_teclas(st)
+
+                print(ver)
+
                 # soma da classe
                 Tecido.loop_string += 1
 

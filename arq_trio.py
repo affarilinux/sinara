@@ -1,7 +1,6 @@
 import trio
 
-'''from sistema_hardware.orgao_portas.tecido_teclado.celula import (
-    Membrana_plasmatica, Nucleo)'''
+from sistema_hardware.orgao_portas.tecido_teclado.tecido import Tecido
 
 import main
 
@@ -11,8 +10,8 @@ class TrioTasks:
 
         # Função assíncrona que executa uma tarefa repetidamente usando Trio
         while main.Sistema.while_treads:
-        
 
+            tec = Tecido()
             await trio.sleep(2)  # Aguarda 2 segundos antes de continuar
 
     async def run(self):
@@ -25,4 +24,3 @@ class TrioTasks:
 
         # Executa o loop do Trio
         trio.run(self.run)
-
