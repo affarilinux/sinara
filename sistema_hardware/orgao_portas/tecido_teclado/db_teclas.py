@@ -1,13 +1,17 @@
 from NEO4J.base import Neo4jClient
 
+def verificar_teclas(self, carac):
 
-class DBTecido(Neo4jClient):
+    self.ativar_Neo()
 
-    def verificar_teclas(self, carac):
+    query = f"MATCH (n:Tecla {{caractere: '{carac}'}}) RETURN n"
+    results = self.executar_query(query)
+    
+    self.sair_Neo()
 
-        self.ativar_Neo()
+    if results:
+        return True
+    else:
+        return False
 
-        print(carac)
-        self.sair_Neo()
-
-        return
+       
