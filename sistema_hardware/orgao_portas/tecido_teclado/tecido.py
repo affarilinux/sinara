@@ -57,10 +57,9 @@ class TeclaSensor:
 
             st = sensor[0][Tecido.loop_string]
 
+            # inserir no banco
             dbt = DBTecido()
-            ver = dbt.verificar_teclas(st)
-
-            print(ver)
+            dbt.verificar_teclas(st, self.sec_randon_string())
 
             # soma da classe
             Tecido.loop_string += 1

@@ -6,9 +6,16 @@ class NeoTabela(Neo4jClient):
     # nao tem como criar rotulo sem adicionar os objetos
     def rotulo_estado(self, rotulo):
 
+        # tem que ter ativar banco aqui se  nao dar erro
+        #  <class 'AttributeError'>:
+        self.ativar_Neo()
+
         rot = self.verificar_rotulo(rotulo)
 
+        self.sair_Neo()
+
         if rot == "KeyError":
+
             return "KeyError"
 
         else:
@@ -20,7 +27,6 @@ class NeoTabela(Neo4jClient):
 
         query = "CALL db.labels()"
 
-        print(rotulo)
         try:
             results = self.executar_query(query)
             # Extrai os rótulos da resposta
