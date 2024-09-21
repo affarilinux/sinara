@@ -25,9 +25,6 @@ class Tecido:
                 print(main.Sistema.while_treads)
             else:
                 self.lista_sensor_ext()
-    """ 
-        função primaria
-    """
 
     def lista_sensor_ext(self):
 
@@ -40,27 +37,39 @@ class Tecido:
         # se lista sensitive_ext.py for maior que 0
         if lensensorlista > 0:
 
-            # quantidade itens na lista sensitive_ext
-            lensensorstring = len(sensortec[0])
+            ts = TeclaSensor()
+            ts.Sensor(sensortec)
 
-            # loop contagem da classe
-            if Tecido.loop_string < lensensorstring:
+    """ 
+        função primaria
+    """
 
-                st = sensortec[0][Tecido.loop_string]
 
-                dbt = DBTecido()
-                ver = dbt.verificar_teclas(st)
+class TeclaSensor:
 
-                print(ver)
+    def Sensor(self, sensor):
 
-                # soma da classe
-                Tecido.loop_string += 1
+        # quantidade itens na lista sensitive_ext
+        lensensorstring = len(sensor[0])
 
-            # loop contagem da classe
-            else:
-                # remove indice 0 da lista
-                sensitive_ext.SensorExt.shared_teclado.pop(0)
-                Tecido.loop_string = 0
+        # loop contagem da classe
+        if Tecido.loop_string < lensensorstring:
+
+            st = sensor[0][Tecido.loop_string]
+
+            dbt = DBTecido()
+            ver = dbt.verificar_teclas(st)
+
+            print(ver)
+
+            # soma da classe
+            Tecido.loop_string += 1
+
+        # loop contagem da classe
+        else:
+            # remove indice 0 da lista
+            sensitive_ext.SensorExt.shared_teclado.pop(0)
+            Tecido.loop_string = 0
 
     """
         funcoes suporte

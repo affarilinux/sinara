@@ -10,7 +10,25 @@ class Neo4jClient:
         # Criando o driver
         self.driver = GraphDatabase.driver(
             Neo.url, auth=(Neo.username, Neo.password))
-        print(12)
+        print("ativar")
+
+    def executar_query(self, query):
+
+        try:
+            with self.driver.session() as session:
+                result = session.run(query)
+
+                # Verificando se há resultados
+                records = result.data()
+                if records:
+                    return records
+                else:
+
+                    return "s/dados"
+
+        except Exception as e:
+            print(f'Erro capturado {e.__class__}: {e}')
+            return "erro query"
 
     def commit_Neo(self):
 
@@ -26,5 +44,5 @@ class Neo4jClient:
 
     def sair_Neo(self):
 
-        print(13)
+        print("sair")
         self.driver.close()

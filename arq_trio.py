@@ -12,6 +12,7 @@ class TrioTasks:
         while main.Sistema.while_treads:
 
             tec = Tecido()
+
             await trio.sleep(2)  # Aguarda 2 segundos antes de continuar
 
     async def run(self):
