@@ -76,9 +76,8 @@ class TeclaSensor:
 
                 else:
 
-                    lista_frequencia = dbt.lista_frequencias()
-                    print(lista_frequencia)
-                    # dbt.inserir_string(st, self.sec_randon_string([]))
+                    dbt.inserir_string(st, self.sec_randon_string(
+                        dbt.lista_frequencias()))
 
             # soma da classe
             Tecido.loop_string += 1

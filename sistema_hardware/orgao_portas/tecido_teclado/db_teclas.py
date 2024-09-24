@@ -60,9 +60,11 @@ class DBTecido(Neo4jClient):
 
     def lista_frequencias(self):
 
+        self.ativar_Neo()
+
         # A query Cypher para listar apenas as frequências
         query = """
-        MATCH (t:Tecla)
+        MATCH (t:CARACTERE)
         RETURN t.frequencia AS frequencia
         ORDER BY t.frequencia DESC
         """
@@ -72,4 +74,7 @@ class DBTecido(Neo4jClient):
 
         # Converte os resultados em uma lista de frequências
         lista_frequencias = [r['frequencia'] for r in results]
+
+        self.ativar_Neo()
+
         return lista_frequencias
