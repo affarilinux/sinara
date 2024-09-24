@@ -57,9 +57,28 @@ class TeclaSensor:
 
             st = sensor[0][Tecido.loop_string]
 
-            # inserir no banco
             dbt = DBTecido()
-            dbt.verificar_teclas(st, self.sec_randon_string())
+
+            # inseri no banco
+            rotulo_existe = dbt.verificar_rotulo_caractere()
+
+            if rotulo_existe == "KeyError":
+
+                dbt.inserir_string(st, self.sec_randon_string([]))
+
+            else:
+
+                verificar = dbt.verificar_caractere(st)
+
+                if verificar == True:
+
+                    print(st)
+
+                else:
+
+                    lista_frequencia = dbt.lista_frequencias()
+                    print(lista_frequencia)
+                    # dbt.inserir_string(st, self.sec_randon_string([]))
 
             # soma da classe
             Tecido.loop_string += 1
@@ -70,19 +89,14 @@ class TeclaSensor:
             sensitive_ext.SensorExt.shared_teclado.pop(0)
             Tecido.loop_string = 0
 
-    """
-        funcoes suporte
-    """
-
     def sec_randon_string(self, nun_ins):
 
         # Define o intervalo de números e a lista de exceções
         intervalo = range(1, 10001)  # Números de 1 a 10 000
 
-        # (nun_ins.sensor) Lista de números a serem excluídos
         # Cria uma lista com os números que não estão na lista de exceções
         numeros_validos = [
-            num for num in intervalo if num not in nun_ins.frequencia]
+            num for num in intervalo if num not in nun_ins]
 
         # Escolhe um número aleatório da lista de números válidos
         numero_aleatorio = random.choice(numeros_validos)
