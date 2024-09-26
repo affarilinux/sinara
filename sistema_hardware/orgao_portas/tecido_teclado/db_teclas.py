@@ -78,3 +78,27 @@ class DBTecido(Neo4jClient):
         self.ativar_Neo()
 
         return lista_frequencias
+
+    
+    def encontrar_frequencia_caractere(self, caractere):
+
+        self.ativar_Neo()
+
+        # Consulta Cypher para encontrar a frequência de um caractere específico
+        query = """
+        MATCH (c:CARACTERE {nome: $caractere})
+        RETURN c.frequencia AS frequencia
+        """
+
+        # Executa a consulta com o parâmetro do caractere
+        resultado = self.executar_query_2(query, {"caractere": caractere})
+
+        self.sair_Neo()
+        
+        frequencia = resultado[0]['frequencia']
+        
+        return frequencia
+
+    
+
+        

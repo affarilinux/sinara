@@ -70,14 +70,18 @@ class TeclaSensor:
 
                 verificar = dbt.verificar_caractere(st)
 
+                lista_ss = dbt.lista_frequencias()
+                ## inserir dicionario, processamento
                 if verificar == True:
 
-                    print(st)
+                    verificar_1 = dbt.encontrar_frequencia_caractere(st)
+                    print(verificar_1)
 
+                # inserir rotulo
                 else:
 
                     dbt.inserir_string(st, self.sec_randon_string(
-                        dbt.lista_frequencias()))
+                        lista_ss))
 
             # soma da classe
             Tecido.loop_string += 1

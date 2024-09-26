@@ -11,6 +11,12 @@ class Nucleo:
 
 class MembranaPlasmatica:
 
-    def sensor_tecla_inserir(self):
+    def sensor_tecla_inserir(self,fim):
 
-        if Nucleo.lista_processamento.get() is not None:
+        if Nucleo.lista_processamento.get(fim) is not None:
+
+            print("sim")
+
+        else:
+
+            print("nao")
