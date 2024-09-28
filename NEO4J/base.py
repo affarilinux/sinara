@@ -12,24 +12,6 @@ class Neo4jClient:
             Neo.url, auth=(Neo.username, Neo.password))
         # print("ativar")
 
-    def executar_query(self, query):
-
-        try:
-            with self.driver.session() as session:
-                result = session.run(query)
-
-                # Verificando se há resultados
-                records = result.data()
-                if records:
-                    return records
-                else:
-
-                    return "s/dados"
-
-        except Exception as e:
-            # print(f'Erro capturado {e.__class__}: {e}')
-            return "erro query"
-
     def commit_Neo(self):
 
         with self.driver.session() as session:

@@ -4,30 +4,45 @@ from NEO4J.tabela import NeoTabela
 
 class DBTecido(Neo4jClient):
 
-    # tem erro em que nao pode ser resolvido em caso de nao tiver a "chave:item"
-    # erro "Received notification from DBMS server:""
-    def verificar_rotulo_caractere(self):
-
-        tabela = NeoTabela()
-        tb = tabela.rotulo_estado("CARACTERE")
-
-        # rotulo nao existe
-        if tb == "KeyError":
-
-            return "KeyError"
-
-        else:
-
-            return "rotulo"
-
     def inserir_string(self, carac, frequencia):
 
         self.ativar_Neo()
 
-        query = f"CREATE (n:CARACTERE {{caractere: '{carac}', frequencia: {
-            frequencia}}}) RETURN n"
+        query = f"""CREATE (n:CARACTERE {{caractere: '{carac}', frequencia: {
+            frequencia}}}) RETURN n"""
 
-        result = self.executar_query(query)
+        with self.driver.session() as session:
+            result = session.run(query)
+
+        self.sair_Neo()
+
+    """
+        celula
+    """
+
+    def inserir_celular_Sensor(self, id, SS, valor=0.000000001):
+
+        self.ativar_Neo()
+
+        query = f"""CREATE (n:SENSOR_TECLA {{ID: '{id}', sensor: '{
+            SS}', vida:{valor}}}) RETURN n"""
+
+        with self.driver.session() as session:
+            result = session.run(query)
+
+        self.sair_Neo()
+
+    # futuramente a função ID vai sumir do banco.
+    def get_max_ID(self):
+
+        self.ativar_Neo()
+
+        query = f"""MATCH (t:SENSOR_TECLA) RETURN max(t.ID) AS MaxID"""
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            max_ID = result.single()[0]  # Obtém o valor máximo
+            return max_ID
 
         self.sair_Neo()
 
@@ -35,28 +50,24 @@ class DBTecido(Neo4jClient):
 
         self.ativar_Neo()
 
-        query = "MATCH (t:CARACTERE {caractere: $caractere}) RETURN t"
-        results = self.executar_query_2(
-            query, parametros={"caractere": caractere})
+        query = """MATCH (t:CARACTERE {caractere: $caractere}) RETURN t"""
+
+        with self.driver.session() as session:
+            parametros = {"caractere": caractere}
+            result = session.run(query, parametros)
+
+        carac_ver = [record for record in result]
+        print(carac_ver)
 
         self.sair_Neo()
 
         # Verifica se há algum resultado
-        if results and len(results) > 0:
+        if carac_ver and len(carac_ver) > 0:
+            print("04")
             return True  # Caractere existe
         else:
+            print("05")
             return False  # Caractere não existe
-
-    def executar_query_2(self, query, parametros=None):
-
-        with self.driver.session() as session:
-            if parametros:
-                result = session.run(query, parametros)
-            else:
-                result = session.run(query)
-
-            # Convertendo o resultado em uma lista de registros
-            return [record for record in result]
 
     def lista_frequencias(self):
 
@@ -70,7 +81,8 @@ class DBTecido(Neo4jClient):
         """
 
         # Executa a query e retorna os resultados
-        results = self.executar_query(query)
+        with self.driver.session() as session:
+            results = session.run(query)
 
         # Converte os resultados em uma lista de frequências
         lista_frequencias = [r['frequencia'] for r in results]
@@ -79,26 +91,24 @@ class DBTecido(Neo4jClient):
 
         return lista_frequencias
 
-    
     def encontrar_frequencia_caractere(self, caractere):
 
         self.ativar_Neo()
 
         # Consulta Cypher para encontrar a frequência de um caractere específico
         query = """
-        MATCH (c:CARACTERE {nome: $caractere})
+        MATCH (c:CARACTERE {caractere: $caractere})
         RETURN c.frequencia AS frequencia
         """
 
-        # Executa a consulta com o parâmetro do caractere
-        resultado = self.executar_query_2(query, {"caractere": caractere})
+        with self.driver.session() as session:
+            resultado = session.run(query, parametros={"caractere": caractere})
+
+            # Retorna todos os resultados em uma lista de dicionários
+            result_freq = [record.data() for record in resultado]
+
+        frequencia = result_freq[0].get('frequencia')
 
         self.sair_Neo()
-        
-        frequencia = resultado[0]['frequencia']
-        
+
         return frequencia
-
-    
-
-        

@@ -3,6 +3,8 @@ import random
 import sensitive_ext
 import main
 
+from NEO4J.tabela import NeoTabela
+
 from sistema_hardware.orgao_portas.tecido_teclado.db_teclas import DBTecido
 
 """  LEITURA DE VARIAVEL - INICIO DE PROCESSO EXTERNO """
@@ -58,30 +60,48 @@ class TeclaSensor:
             st = sensor[0][Tecido.loop_string]
 
             dbt = DBTecido()
+            tabela = NeoTabela()
 
-            # inseri no banco
-            rotulo_existe = dbt.verificar_rotulo_caractere()
+            # True e false
+            rotulo_caractere = tabela.verificar_rotulo_CARACTERE("CARACTERE")
 
-            if rotulo_existe == "KeyError":
+            if rotulo_caractere == "KeyError":
 
-                dbt.inserir_string(st, self.sec_randon_string([]))
+                print("02")
+                # cada entrada tem esta numa variavel pois da erro em salvar
+                randon = self.sec_randon_string([])
+                # caractere
+                dbt.inserir_string(st, randon)
+                # celula
+                dbt_1 = DBTecido()
+                dbt_1.inserir_celular_Sensor(0, randon)
 
-            else:
+            elif rotulo_caractere == "ROTULO EXISTE":
 
+                print("03")
                 verificar = dbt.verificar_caractere(st)
 
-                lista_ss = dbt.lista_frequencias()
-                ## inserir dicionario, processamento
+                # inserir dicionario, processamento
                 if verificar == True:
 
+                    # verificar frequencia do caractere
                     verificar_1 = dbt.encontrar_frequencia_caractere(st)
-                    print(verificar_1)
-
+                    # lista do sensor
+                    # lista_sensores =
+                    self.calculo_ss(verificar_1, lista_ss)
                 # inserir rotulo
-                else:
+                elif verificar == False:
 
-                    dbt.inserir_string(st, self.sec_randon_string(
-                        lista_ss))
+                    lista_ss = dbt.lista_frequencias()
+                    randon_1 = self.sec_randon_string(lista_ss)
+
+                    # caractere
+                    dbt.inserir_string(st, randon_1)
+
+                    max = dbt.get_max_ID()
+                    # celula
+                    dbt_2 = DBTecido()
+                    dbt_2.inserir_celular_Sensor(max, randon_1)
 
             # soma da classe
             Tecido.loop_string += 1
@@ -105,3 +125,7 @@ class TeclaSensor:
         numero_aleatorio = random.choice(numeros_validos)
         # retorn de um valor
         return numero_aleatorio
+
+    def calculo_ss(self, carac, lista_s):
+
+        print(carac, lista_s)
