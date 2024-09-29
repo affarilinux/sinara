@@ -17,7 +17,6 @@ class NeoTabela(Neo4jClient):
             rotulos_existentes = [r[0] for r in results]
 
         # Verifica se o rótulo passado está na lista de rótulos
-        print("01")
         rot = rotulo in rotulos_existentes
 
         self.sair_Neo()  # Sempre fecha a conexão, mesmo se houver erro

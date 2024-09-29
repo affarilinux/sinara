@@ -10,7 +10,6 @@ class Neo4jClient:
         # Criando o driver
         self.driver = GraphDatabase.driver(
             Neo.url, auth=(Neo.username, Neo.password))
-        # print("ativar")
 
     def commit_Neo(self):
 
@@ -22,9 +21,7 @@ class Neo4jClient:
                 result = tx.run(query)
                 # Fazendo o commit manualmente
                 tx.commit()
-                # print("Nó criado com sucesso e transação comitada.")
 
     def sair_Neo(self):
 
-        # print("sair")
         self.driver.close()

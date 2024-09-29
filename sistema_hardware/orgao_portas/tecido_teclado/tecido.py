@@ -67,7 +67,6 @@ class TeclaSensor:
 
             if rotulo_caractere == "KeyError":
 
-                print("02")
                 # cada entrada tem esta numa variavel pois da erro em salvar
                 randon = self.sec_randon_string([])
                 # caractere
@@ -78,17 +77,16 @@ class TeclaSensor:
 
             elif rotulo_caractere == "ROTULO EXISTE":
 
-                print("03")
                 verificar = dbt.verificar_caractere(st)
 
                 # inserir dicionario, processamento
                 if verificar == True:
-
                     # verificar frequencia do caractere
                     verificar_1 = dbt.encontrar_frequencia_caractere(st)
                     # lista do sensor
-                    # lista_sensores =
-                    self.calculo_ss(verificar_1, lista_ss)
+                    lista_sensores = dbt.lista_celular_sensor()
+                    self.calculo_ss(verificar_1, lista_sensores)
+
                 # inserir rotulo
                 elif verificar == False:
 
@@ -99,9 +97,10 @@ class TeclaSensor:
                     dbt.inserir_string(st, randon_1)
 
                     max = dbt.get_max_ID()
+
                     # celula
                     dbt_2 = DBTecido()
-                    dbt_2.inserir_celular_Sensor(max, randon_1)
+                    dbt_2.inserir_celular_Sensor(int(max) + 1, randon_1)
 
             # soma da classe
             Tecido.loop_string += 1

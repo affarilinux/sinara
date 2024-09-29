@@ -53,20 +53,20 @@ class DBTecido(Neo4jClient):
         query = """MATCH (t:CARACTERE {caractere: $caractere}) RETURN t"""
 
         with self.driver.session() as session:
+            # nao pode ficar dentro run ={}
             parametros = {"caractere": caractere}
             result = session.run(query, parametros)
 
-        carac_ver = [record for record in result]
-        print(carac_ver)
+            carac_ver = [record for record in result]
 
         self.sair_Neo()
 
         # Verifica se há algum resultado
         if carac_ver and len(carac_ver) > 0:
-            print("04")
+
             return True  # Caractere existe
         else:
-            print("05")
+
             return False  # Caractere não existe
 
     def lista_frequencias(self):
@@ -84,12 +84,28 @@ class DBTecido(Neo4jClient):
         with self.driver.session() as session:
             results = session.run(query)
 
-        # Converte os resultados em uma lista de frequências
-        lista_frequencias = [r['frequencia'] for r in results]
+            # Converte os resultados em uma lista de frequências
+            lista_frequencias = [r['frequencia'] for r in results]
+
+        self.sair_Neo()
+
+        return lista_frequencias
+
+    def lista_celular_sensor(self):
 
         self.ativar_Neo()
 
-        return lista_frequencias
+        query = """MATCH (s:SENSOR_TECLA) RETURN s.ID AS ID, s.sensor AS sensor"""
+
+        with self.driver.session() as session:
+            result = session.run(query)
+
+            # Converte os resultados em uma lista de frequências
+            lista_celular_sensor = [record.data() for record in result]
+
+        self.sair_Neo()
+
+        return lista_celular_sensor
 
     def encontrar_frequencia_caractere(self, caractere):
 
@@ -102,7 +118,9 @@ class DBTecido(Neo4jClient):
         """
 
         with self.driver.session() as session:
-            resultado = session.run(query, parametros={"caractere": caractere})
+            # nao pode ficar dentro run ={}
+            parametros = {"caractere": caractere}
+            resultado = session.run(query, parametros)
 
             # Retorna todos os resultados em uma lista de dicionários
             result_freq = [record.data() for record in resultado]
