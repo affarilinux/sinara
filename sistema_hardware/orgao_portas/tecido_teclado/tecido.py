@@ -2,10 +2,11 @@ import random
 
 import sensitive_ext
 import main
+import CELULA
 
-from NEO4J.tabela import NeoTabela
-
-from sistema_hardware.orgao_portas.tecido_teclado.db_teclas import DBTecido
+from sistema_hardware.orgao_portas.tecido_teclado.db_neo import NeoTecidoSS
+from sistema_hardware.orgao_portas.tecido_teclado.db_sqlite import SqliteTecido
+from sistema_hardware.orgao_portas.tecido_teclado.celula import Nucleo
 
 """  LEITURA DE VARIAVEL - INICIO DE PROCESSO EXTERNO """
 
@@ -59,50 +60,40 @@ class TeclaSensor:
 
             st = sensor[0][Tecido.loop_string]
 
-            dbt = DBTecido()
-            tabela = NeoTabela()
+            sql_tecido = SqliteTecido()
+            sql_tec = sql_tecido.verificar_caractere(str(st))
 
-            # True e false
-            rotulo_caractere = tabela.verificar_rotulo_CARACTERE("CARACTERE")
+            dbt = NeoTecidoSS()
 
-            if rotulo_caractere == "KeyError":
+            # tem no banco os caracteres
+            if sql_tec == True:
 
-                # cada entrada tem esta numa variavel pois da erro em salvar
-                randon = self.sec_randon_string([])
-                # caractere
-                dbt.inserir_string(st, randon)
-                # celula
-                dbt_1 = DBTecido()
-                dbt_1.inserir_celular_Sensor(0, randon)
+                freq_caractere = sql_tecido.verificar_frequencia_por_caractere(
+                    st)
 
-            elif rotulo_caractere == "ROTULO EXISTE":
+                lista_sensores = dbt.lista_celular_sensor()
 
-                verificar = dbt.verificar_caractere(st)
+                self.calculo_ss(freq_caractere, lista_sensores)
 
-                # inserir dicionario, processamento
-                if verificar == True:
-                    # verificar frequencia do caractere
-                    verificar_1 = dbt.encontrar_frequencia_caractere(st)
-                    # lista do sensor
-                    lista_sensores = dbt.lista_celular_sensor()
-                    self.calculo_ss(verificar_1, lista_sensores)
+            # nao tem no banco os caracteres
+            elif sql_tec == False:
 
-                # inserir rotulo
-                elif verificar == False:
+                list_freqsql = sql_tecido.obter_lista_frequencias()
+                randon_1 = self.sec_randon_string(list_freqsql)
 
-                    lista_ss = dbt.lista_frequencias()
-                    randon_1 = self.sec_randon_string(lista_ss)
+                # linha tabela
+                sql_tecido.inserir_caractere(st, randon_1)
 
-                    # caractere
-                    dbt.inserir_string(st, randon_1)
+                if len(list_freqsql) == 0:
 
+                    dbt.inserir_celular_Sensor(0, randon_1)
+                else:
                     max = dbt.get_max_ID()
 
                     # celula
-                    dbt_2 = DBTecido()
-                    dbt_2.inserir_celular_Sensor(int(max) + 1, randon_1)
+                    dbt.inserir_celular_Sensor(int(max) + 1, randon_1)
 
-            # soma da classe
+                # soma da classe
             Tecido.loop_string += 1
 
         # loop contagem da classe
@@ -125,6 +116,33 @@ class TeclaSensor:
         # retorn de um valor
         return numero_aleatorio
 
-    def calculo_ss(self, carac, lista_s):
+    def calculo_ss(self, freq, lista_s):
 
-        print(carac, lista_s)
+        quant_len = len(lista_s)
+        valor = 0
+        lista = {}
+        while valor < quant_len:
+
+            valor_list = int(lista_s[valor].get("sensor"))
+
+            resultado = None
+            if valor_list > freq or valor_list < freq:
+
+                # int para evitar numeros fracionado
+                resultado = int((
+                    CELULA.Celula.pico / Nucleo.sinapse) * valor_list)
+
+            else:
+                resultado = CELULA.Celula.pico
+
+            valor_id = int(lista_s[valor].get("ID"))
+
+            if resultado >= CELULA.Celula.limiar:
+
+                lista[valor_id] = resultado
+
+            valor = valor + 1
+
+        Nucleo.lista_processamento["SS"] = lista
+
+        print(Nucleo.lista_processamento)

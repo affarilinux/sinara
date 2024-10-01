@@ -25,3 +25,26 @@ class Neo4jClient:
     def sair_Neo(self):
 
         self.driver.close()
+
+    def verificar_conexao(self):
+        try:
+
+            self.ativar_Neo()
+
+            with self.driver.session() as session:
+                # Executa um comando simples, como 'RETURN 1'
+                result = session.run("RETURN 1")
+                # Verifica se obteve resposta
+                if result.single()[0] == 1:
+                    print("Conexão bem-sucedida com o Neo4j!")
+                else:
+                    print("Conexão falhou.")
+
+            # Fecha o driver
+            self.sair_Neo()
+
+        # except Erro ao conectar:
+        except Exception as e:
+
+            print("#@"*20)
+            print(f"Erro ao conectar: {e}")

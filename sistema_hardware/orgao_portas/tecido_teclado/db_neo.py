@@ -1,24 +1,7 @@
 from NEO4J.base import Neo4jClient
-from NEO4J.tabela import NeoTabela
 
 
-class DBTecido(Neo4jClient):
-
-    def inserir_string(self, carac, frequencia):
-
-        self.ativar_Neo()
-
-        query = f"""CREATE (n:CARACTERE {{caractere: '{carac}', frequencia: {
-            frequencia}}}) RETURN n"""
-
-        with self.driver.session() as session:
-            result = session.run(query)
-
-        self.sair_Neo()
-
-    """
-        celula
-    """
+class NeoTecidoSS(Neo4jClient):
 
     def inserir_celular_Sensor(self, id, SS, valor=0.000000001):
 
@@ -46,6 +29,45 @@ class DBTecido(Neo4jClient):
 
         self.sair_Neo()
 
+        # Verifica se há algum resultado
+        if carac_ver and len(carac_ver) > 0:
+
+            return True  # Caractere existe
+        else:
+
+            return False  # Caractere não existe
+
+    def lista_celular_sensor(self):
+
+        self.ativar_Neo()
+
+        query = """MATCH (s:SENSOR_TECLA) RETURN s.ID AS ID, s.sensor AS sensor"""
+
+        with self.driver.session() as session:
+            result = session.run(query)
+
+            # Converte os resultados em uma lista de frequências
+            lista_celular_sensor = [record.data() for record in result]
+
+        self.sair_Neo()
+
+        return lista_celular_sensor
+
+
+class Valor:
+
+    def inserir_string(self, carac, frequencia):
+
+        self.ativar_Neo()
+
+        query = f"""CREATE (n:CARACTERE {{caractere: '{carac}', frequencia: {
+            frequencia}}}) RETURN n"""
+
+        with self.driver.session() as session:
+            result = session.run(query)
+
+        self.sair_Neo()
+
     def verificar_caractere(self, caractere):
 
         self.ativar_Neo()
@@ -60,14 +82,6 @@ class DBTecido(Neo4jClient):
             carac_ver = [record for record in result]
 
         self.sair_Neo()
-
-        # Verifica se há algum resultado
-        if carac_ver and len(carac_ver) > 0:
-
-            return True  # Caractere existe
-        else:
-
-            return False  # Caractere não existe
 
     def lista_frequencias(self):
 
@@ -90,22 +104,6 @@ class DBTecido(Neo4jClient):
         self.sair_Neo()
 
         return lista_frequencias
-
-    def lista_celular_sensor(self):
-
-        self.ativar_Neo()
-
-        query = """MATCH (s:SENSOR_TECLA) RETURN s.ID AS ID, s.sensor AS sensor"""
-
-        with self.driver.session() as session:
-            result = session.run(query)
-
-            # Converte os resultados em uma lista de frequências
-            lista_celular_sensor = [record.data() for record in result]
-
-        self.sair_Neo()
-
-        return lista_celular_sensor
 
     def encontrar_frequencia_caractere(self, caractere):
 

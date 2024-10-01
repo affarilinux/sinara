@@ -4,7 +4,8 @@ import arq_trio
 import API
 import sensitive_ext
 
-from NEO4J.tabela import NeoTabela
+from SQLITE.tabela import SqliteTabela
+from NEO4J.base import Neo4jClient
 
 
 class Sistema:
@@ -13,6 +14,11 @@ class Sistema:
 
 
 if __name__ == '__main__':
+
+    sql_tab = SqliteTabela()
+
+    neo4j = Neo4jClient()
+    neo4j.verificar_conexao()
 
     # Instancia e executa a classe FlaskAPI
     flask_api = API.FlaskAPI(
