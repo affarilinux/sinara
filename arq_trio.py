@@ -6,7 +6,13 @@ import main
 
 
 class TrioTasks:
-    async def tim(self):
+    async def rede(self):
+
+        print(15)
+
+        await trio.sleep(9)
+
+    async def teclado(self):
 
         # Função assíncrona que executa uma tarefa repetidamente usando Trio
         while main.Sistema.while_treads:
@@ -19,7 +25,10 @@ class TrioTasks:
 
         # Função para rodar todas as tarefas assíncronas usando o Trio
         async with trio.open_nursery() as nursery:
-            nursery.start_soon(self.tim)  # Inicia a tarefa 'tim' no Trio
+
+            # Inicia a tarefa 'teclado' no Trio
+            nursery.start_soon(self.teclado)
+            nursery.start_soon(self.rede)
 
     def start_trio(self):
 
