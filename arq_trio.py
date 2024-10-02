@@ -1,14 +1,16 @@
 import trio
+import main
 
 from sistema_hardware.orgao_portas.tecido_teclado.tecido import Tecido
+from REDE.rede import Rede
 
-import main
+
 
 
 class TrioTasks:
     async def rede(self):
 
-        print(15)
+        rede = Rede()
 
         await trio.sleep(9)
 
@@ -28,6 +30,8 @@ class TrioTasks:
 
             # Inicia a tarefa 'teclado' no Trio
             nursery.start_soon(self.teclado)
+            ## Inicia a tarefa 'rede' no Trio
+            ## filtra rede
             nursery.start_soon(self.rede)
 
     def start_trio(self):
