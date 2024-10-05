@@ -3,7 +3,9 @@ from NEO4J.base import Neo4jClient
 
 class NeoTecidoSS(Neo4jClient):
 
-    def inserir_celular_Sensor(self, id, SS, valor=0.000000001):
+    def inserir_celular_Sensor(self, id, SS):
+
+        valor = 0.000000001
 
         self.ativar_Neo()
 

@@ -7,6 +7,7 @@ import CELULA
 from sistema_hardware.orgao_portas.tecido_teclado.db_neo import NeoTecidoSS
 from sistema_hardware.orgao_portas.tecido_teclado.db_sqlite import SqliteTecido
 from sistema_hardware.orgao_portas.tecido_teclado.celula import Nucleo
+from sistema_hardware.orgao_portas.tecido_teclado.rede_vida import HistoriaVida
 
 """  LEITURA DE VARIAVEL - INICIO DE PROCESSO EXTERNO """
 
@@ -140,6 +141,10 @@ class TeclaSensor:
             if resultado >= CELULA.Celula.limiar:
 
                 lista[valor_id] = resultado
+
+                # vida celular soma
+                id_ht = HistoriaVida()
+                id_ht.soma_vida_sensores_81(valor_id)
 
             valor = valor + 1
 

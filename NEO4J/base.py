@@ -48,3 +48,4 @@ class Neo4jClient:
 
             print("#@"*20)
             print(f"Erro ao conectar: {e}")
+            print("#@"*20, "\n")

@@ -1,11 +1,19 @@
-from REDE.snperiferico.teclado import Vida
+# from REDE.snperiferico.teclado import Vida
+
 
 class HistoriaVida:
 
-    lista_vida = {}
+    lista_vida_9 = {}
 
-    def inserir_and_soma_sensores(self,list_sensor):
+    # tempo 81
+    def soma_vida_sensores_81(self, id):
+        adicao = 1
+        if id in HistoriaVida.lista_vida_9:
 
-        len_list = len(list_sensor)
+            HistoriaVida.lista_vida_9[id] += adicao
 
-        while
+        else:
+
+            HistoriaVida.lista_vida_9[id] = adicao
+
+        print(HistoriaVida.lista_vida_9)
